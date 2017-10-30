@@ -1,5 +1,6 @@
 package com.cs.ajinkya.springbootstarter.topic;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class TopicService {
 
-	private List<Topic> topics = Arrays.asList(new Topic("spring", "Spring Framework", "Spring Framework Description"),
-			new Topic("hibernate", "Hibernate Framework", "Hibernate Framework Description"));
+	private List<Topic> topics = new ArrayList<Topic>(
+			Arrays.asList(
+					new Topic("spring", "Spring Framework", "Spring Framework Description"),
+					new Topic("hibernate", "Hibernate Framework", "Hibernate Framework Description")));
 
 	public List<Topic> getAllTopics() {
 		return topics;
@@ -18,7 +21,7 @@ public class TopicService {
 	}
 
 	public Topic getTopic(String id) {
-		
+
 		Topic response = new Topic();
 		for (Topic topic : topics) {
 			if (topic.getId().equals(id)) {
@@ -29,7 +32,10 @@ public class TopicService {
 			}
 		}
 		return response;
+	}
 
+	public void addTopic(Topic topic) {
+		topics.add(topic);
 	}
 
 }
