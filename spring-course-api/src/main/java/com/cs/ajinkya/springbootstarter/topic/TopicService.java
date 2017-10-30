@@ -47,4 +47,16 @@ public class TopicService {
 		}
 	}
 
+	public String deleteTopic(String id) {
+		
+		for(int i = 0; i < topics.size(); i++) {
+			if(topics.get(i).getId().equals(id)){
+				topics.remove(i);
+				return "Topic with TopicId:" + id + " has been removed from the database";
+			}
+		}
+		
+		return "Topic with TopicId:" + id + " doesn't exists";
+	}
+
 }
