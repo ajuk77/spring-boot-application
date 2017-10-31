@@ -4,59 +4,44 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-//this marks the class as business service 
+/*
+ * This marks the class as business service 
+ */
 @Service
 public class TopicService {
 
-	private List<Topic> topics = new ArrayList<Topic>(
-			Arrays.asList(
-					new Topic("spring", "Spring Framework", "Spring Framework Description"),
-					new Topic("hibernate", "Hibernate Framework", "Hibernate Framework Description")));
+	@Autowired
+	private TopicRepository topicRepository;
 
 	public List<Topic> getAllTopics() {
+		List<Topic> topics = new ArrayList<Topic>();
+		// Here I am interating over the result of findAll and adding each
+		// entity
+		// in the ArrayList
+		topicRepository.findAll().forEach(topics::add);
 		return topics;
 
 	}
 
 	public Topic getTopic(String id) {
+		return topicRepository.findOne(id);
 
-		Topic response = new Topic();
-		for (Topic topic : topics) {
-			if (topic.getId().equals(id)) {
-				response.setId(topic.getId());
-				response.setName(topic.getName());
-				response.setDescription(topic.getDescription());
-				break;
-			}
-		}
-		return response;
 	}
 
 	public void addTopic(Topic topic) {
-		topics.add(topic);
+		topicRepository.save(topic);
 	}
 
 	public void updateTopic(String id, Topic topic) {
-		for (int i = 0; i < topics.size(); i++) {
-			if (topics.get(i).getId().equals(id)) {
-				topics.set(i, topic);
-				return;
-			}
-		}
+		topicRepository.save(topic);
 	}
 
 	public String deleteTopic(String id) {
-		
-		for(int i = 0; i < topics.size(); i++) {
-			if(topics.get(i).getId().equals(id)){
-				topics.remove(i);
-				return "Topic with TopicId:" + id + " has been removed from the database";
-			}
-		}
-		
-		return "Topic with TopicId:" + id + " doesn't exists";
+		topicRepository.delete(id);
+		return "Topic with TopicId:" + id + " has been deleted";
 	}
 
 }
